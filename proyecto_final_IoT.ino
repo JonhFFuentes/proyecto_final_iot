@@ -41,8 +41,8 @@ String emailBodyMessage = "<div style=\"color:#000000;\"><p>- DATOS ESP 32</p></
 //**************
 //**** WIFICONFIG ******
 //**************
-const char* ssid ="Claro_65748E" ;
-const char* password="H6C5R6H2D6F7";
+const char* ssid ="red1" ;
+const char* password="00000000";
 
 //**************
 //**** GLOBAL CONFIG *****
@@ -56,7 +56,7 @@ const int rele = 22;
 
 String topic="";
 String body="";
-int tempModify=34;
+int tempModify=29;
 int banderaControllerTempMail = 0;
 float lastTemperature;
 
@@ -110,7 +110,7 @@ void readDataSensor(){
   Serial.print(F("  Temperatura: "));
   Serial.print(temperature);
   Serial.println(F("°C "));
-  delay(10000);
+  delay(1000);
   }
 
 void readTopicDoor(){
@@ -238,16 +238,16 @@ void loop() {
     dataPublish();
     tempPublish();
     humedityPublish();
+    readTopicDoor();
+    controllerTemp();
+    ThingSpeak.writeFields(channelID,WriteAPIKey);
+    Serial.println("Datos enviados a ThingSpeak!");
     
-    delay(25000);
+    delay(15000);
   }
   client.loop();
-  readTopicDoor();
-  controllerTemp();
-
-  ThingSpeak.writeFields(channelID,WriteAPIKey);
-  Serial.println("Datos enviados a ThingSpeak!");
-  delay(14000);
+  
+ 
 }
 
 
@@ -392,7 +392,6 @@ void callback(char* topico, byte* payload, unsigned int length){
   Serial.println("Mensaje: " + incoming);
 
 }
-
 void ConfigSendMailTo(){
   Serial.println("Preparando para enviar correo");
   Serial.println();  
